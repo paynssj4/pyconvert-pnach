@@ -71,3 +71,5 @@ Pour lancer l'application depuis le terminal, si vous êtes à la racine du proj
    ```
 
 ## Licence
+
+Ce projet est sous licence GPL v3. Voir le fichier `LICENSE` pour plus de détails.
