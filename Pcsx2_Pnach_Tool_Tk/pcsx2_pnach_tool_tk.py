@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, scrolledtext, filedialog, messagebox, simpledialog
-import translations_tk
+import os
 import locale
-import os # Ajouté pour la compatibilité potentielle de l'icône
+import translations_tk # Assurez-vous que translations_tk.py est dans le même répertoire
 
 DARK_BG = "#2E2E2E"
 DARK_FG = "#FFFFFF"
@@ -22,39 +22,30 @@ class Pcsx2PnachToolTk(tk.Tk):
         self._apply_dark_theme()
 
         self.title(translations_tk.get_text("window_title"))
-        self.geometry("700x600")
+        self.geometry("700x650") # Augmenté légèrement la hauteur pour les instructions
         
-        # Assurez-vous que le nom du fichier d'icône ici correspond EXACTEMENT
-        # au nom de votre fichier .ico dans le même répertoire que le script.
-        # L'erreur précédente indiquait "Pcsx2_Pnach_Tool.ico" (avec underscores).
         icon_path = "Pcsx2_Pnach_Tool.ico" 
         if os.path.exists(icon_path):
             try:
                 self.iconbitmap(icon_path)
             except tk.TclError:
-                print(f"Avertissement : Impossible de charger l'icône '{icon_path}'. Format non supporté ou fichier corrompu.")
+                print(f"Avertissement : Impossible de charger l'icône {icon_path}. Assurez-vous que c'est un format .ico valide.")
         else:
-            print(f"Avertissement : Fichier d'icône '{icon_path}' non trouvé.")
+            print(f"Avertissement : Fichier d'icône {icon_path} non trouvé.")
 
-        self.current_pnach_items = [] # Initialisation avant _update_ui_texts
+        self.current_pnach_items = []
 
         self._create_menubar()
-        self.create_widgets() # Crée les widgets avant de mettre à jour leurs textes
-        self._update_ui_texts() # Met à jour les textes après la création
+        self.create_widgets() 
+        self._update_ui_texts() 
         
-        # self.update_save_as_state() est déjà appelé à la fin de _update_ui_texts
-
     def _apply_dark_theme(self):
         self.configure(bg=DARK_BG)
         style = ttk.Style(self)
         try:
-            current_theme = style.theme_use()
-            if 'clam' in style.theme_names():
-                style.theme_use('clam')
-            elif 'vista' in style.theme_names() and os.name == 'nt': 
-                style.theme_use('vista')
+            style.theme_use('clam') 
         except tk.TclError:
-            print("Avertissement : Problème lors de la tentative de changement de thème ttk. Utilisation du thème par défaut.")
+            print("Avertissement : Le thème 'clam' n'est pas disponible, utilisation du thème par défaut.")
 
         style.configure('.', background=DARK_BG, foreground=DARK_FG, fieldbackground=DARK_INSERT_BG)
         style.configure('TFrame', background=DARK_BG)
@@ -65,72 +56,70 @@ class Pcsx2PnachToolTk(tk.Tk):
             foreground=[('active', DARK_BUTTON_FG)])
         style.configure('TEntry', fieldbackground=DARK_INSERT_BG, foreground=DARK_FG, insertcolor=DARK_FG)
         style.configure('TScrollbar', background=DARK_BUTTON_BG, troughcolor=DARK_BG, arrowcolor=DARK_FG)
-        
-        # Pour les menus tk standard (non-ttk)
-        # Commenter toutes les options globales pour les menus pour éviter les conflits
-        # self.option_add('*Menu.background', DARK_BUTTON_BG)
-        # self.option_add('*Menu.foreground', DARK_FG)
-        # self.option_add('*Menu.activeBackground', DARK_SELECT_BG)
-        # self.option_add('*Menu.activeForeground', DARK_FG)
-        # self.option_add('*Menu.disabledForeground', '#888888')
+        style.configure('TLabelframe', background=DARK_BG, foreground=DARK_FG, bordercolor=DARK_FG)
+        style.configure('TLabelframe.Label', background=DARK_BG, foreground=DARK_FG)
+
 
     def _get_system_language(self):
         try:
-            lang_code, _ = locale.getdefaultlocale() 
-            if lang_code:
-                lang_code = lang_code.split('_')[0]
-                if lang_code in translations_tk.TRANSLATIONS:
+            # Utiliser locale.getlocale() après setlocale pour une approche plus moderne
+            current_locale_tuple = locale.getlocale(locale.LC_CTYPE) # Ou locale.getlocale()
+            if current_locale_tuple and current_locale_tuple[0]:
+                lang_code = current_locale_tuple[0].split('_')[0]
+                if lang_code in translations_tk.TRANSLATIONS: 
                     return lang_code
         except Exception:
-            pass
-        return "en" 
+            pass 
+        return "en" # Langue par défaut
 
     def _create_menubar(self):
         self.menubar = tk.Menu(self)
         self.config(menu=self.menubar)
 
         self.file_menu = tk.Menu(self.menubar, tearoff=0)
+        # Définir le label initialement ici
         self.menubar.add_cascade(label=translations_tk.get_text("file_menu"), menu=self.file_menu)
-        self.file_menu.add_command(label=translations_tk.get_text("save_as_button"), command=self.save_as_file)
+        self.file_menu.add_command(label="", command=self.save_as_file, state="disabled") # Label et état mis à jour plus tard
         self.file_menu.add_separator() 
-        self.file_menu.add_command(label=translations_tk.get_text("exit_action"), command=self.quit)
+        self.file_menu.add_command(label="", command=self.quit) # Label mis à jour plus tard
 
         options_menu = tk.Menu(self.menubar, tearoff=0)
-        self.menubar.add_cascade(label=translations_tk.get_text("options_menu"), menu=options_menu)
+        self.menubar.add_cascade(label=translations_tk.get_text("options_menu"), menu=options_menu) # Définir le label initialement ici
         
         self.language_menu = tk.Menu(options_menu, tearoff=0)
-        options_menu.add_cascade(label=translations_tk.get_text("language_menu"), menu=self.language_menu)
+        options_menu.add_cascade(label=translations_tk.get_text("language_menu"), menu=self.language_menu) # Définir le label initialement ici
         
         self.lang_var = tk.StringVar(value=self.current_language)
         system_lang_val = self._get_system_language() 
 
         self.language_menu.add_radiobutton(
-            label=translations_tk.get_text("system_language_action"), variable=self.lang_var, 
+            label=translations_tk.get_text("system_language_action"), variable=self.lang_var, # Définir le label initialement ici
             value=system_lang_val, 
             command=lambda: self._set_language(system_lang_val, is_system=True)
         )
         self.language_menu.add_radiobutton(
-            label=translations_tk.get_text("french_action"), variable=self.lang_var, value="fr", 
+            label=translations_tk.get_text("french_action"), variable=self.lang_var, value="fr", # Définir le label initialement ici
             command=lambda: self._set_language("fr")
         )
         self.language_menu.add_radiobutton(
-            label=translations_tk.get_text("english_action"), variable=self.lang_var, value="en", 
+            label=translations_tk.get_text("english_action"), variable=self.lang_var, value="en", # Définir le label initialement ici
             command=lambda: self._set_language("en")
         )
         self._update_language_menu_radio_state()
 
         self.help_menu = tk.Menu(self.menubar, tearoff=0) 
-        self.menubar.add_cascade(label=translations_tk.get_text("help_menu"), menu=self.help_menu)
-        self.help_menu.add_command(label=translations_tk.get_text("about_action"), command=self.show_about_dialog)
+        self.menubar.add_cascade(label=translations_tk.get_text("help_menu"), menu=self.help_menu) # Définir le label initialement ici
+        self.help_menu.add_command(label=translations_tk.get_text("about_action"), command=self.show_about_dialog) # Définir le label initialement ici
 
     def _update_language_menu_radio_state(self):
         system_lang_code = self._get_system_language()
         if self._is_system_language_selected:
-            self.lang_var.set(system_lang_code) 
+             self.lang_var.set(system_lang_code)
         else:
             self.lang_var.set(self.current_language)
 
     def _set_language(self, lang_code, is_system=False):
+        actual_lang_to_set = lang_code
         if is_system:
             self._is_system_language_selected = True
             actual_lang_to_set = self._get_system_language()
@@ -142,12 +131,14 @@ class Pcsx2PnachToolTk(tk.Tk):
             translations_tk.CURRENT_LANG = actual_lang_to_set
             self.current_language = actual_lang_to_set
         else: 
-            translations_tk.CURRENT_LANG = "en" 
+            translations_tk.CURRENT_LANG = "en"
             self.current_language = "en"
-            if is_system:
+            # Si la langue système n'est pas supportée, on reste sur 'en' mais on garde la sélection "système"
+            if is_system and actual_lang_to_set not in translations_tk.TRANSLATIONS:
                  self._is_system_language_selected = True
-            else: 
+            else:
                  self._is_system_language_selected = False
+
 
         self._update_ui_texts()
         self._update_language_menu_radio_state()
@@ -155,31 +146,32 @@ class Pcsx2PnachToolTk(tk.Tk):
     def _update_ui_texts(self):
         self.title(translations_tk.get_text("window_title"))
         
+        # Mise à jour des labels des menus
+        # Utiliser les indices numériques directs (0, 1, 2) pour les cascades principales
         try:
-            self.menubar.entryconfig(0, label=translations_tk.get_text("file_menu"))
-            self.menubar.entryconfig(1, label=translations_tk.get_text("options_menu"))
-            self.menubar.entryconfig(2, label=translations_tk.get_text("help_menu"))
+            self.menubar.entryconfig(0, label=translations_tk.get_text("file_menu")) # Fichier
+            self.menubar.entryconfig(1, label=translations_tk.get_text("options_menu"))# Options
+            self.menubar.entryconfig(2, label=translations_tk.get_text("help_menu"))   # Aide
         except tk.TclError as e:
+            # Ce try-except est un contournement si le theming cause toujours des conflits
             print(f"Avertissement : Impossible de mettre à jour les labels de la barre de menu principale : {e}")
 
         self.file_menu.entryconfig(0, label=translations_tk.get_text("save_as_button"))
         self.file_menu.entryconfig(2, label=translations_tk.get_text("exit_action"))
 
-        options_menu_widget = self.menubar.nametowidget(self.menubar.entrycget(1, "menu"))
-        if options_menu_widget:
-             options_menu_widget.entryconfig(0, label=translations_tk.get_text("language_menu"))
-
         self.language_menu.entryconfig(0, label=translations_tk.get_text("system_language_action"))
         self.language_menu.entryconfig(1, label=translations_tk.get_text("french_action"))
         self.language_menu.entryconfig(2, label=translations_tk.get_text("english_action"))
+        self.help_menu.entryconfig(0, label=translations_tk.get_text("about_action"))
 
-        if self.help_menu: 
-            self.help_menu.entryconfig(0, label=translations_tk.get_text("about_action"))
-
-        if hasattr(self, 'input_label'):
-            self.input_label.config(text=translations_tk.get_text("cheat_codes_label"))
-        if hasattr(self, 'output_label'):
-            self.output_label.config(text=translations_tk.get_text("pnach_output_label"))
+        # Mise à jour des widgets
+        if hasattr(self, 'input_frame'):
+            self.input_frame.config(text=translations_tk.get_text("input_instructions_label"))
+        if hasattr(self, 'instructions_label'):
+            self.instructions_label.config(text=translations_tk.get_text("input_instructions_text"))
+            # Simuler un placeholder pour ScrolledText n'est pas direct. Les instructions sont au-dessus.
+        if hasattr(self, 'output_frame'):
+            self.output_frame.config(text=translations_tk.get_text("pnach_output_label"))
         if hasattr(self, 'convert_button'):
             self.convert_button.config(text=translations_tk.get_text("convert_button"))
         if hasattr(self, 'clear_button'):
@@ -188,54 +180,66 @@ class Pcsx2PnachToolTk(tk.Tk):
         self.update_save_as_state() 
 
     def create_widgets(self):
-        main_frame = ttk.Frame(self, padding="10")
-        main_frame.pack(expand=True, fill=tk.BOTH)
+        main_container = ttk.Frame(self, padding="10")
+        main_container.pack(expand=True, fill=tk.BOTH)
 
-        self.input_label = ttk.Label(main_frame, text=translations_tk.get_text("cheat_codes_label"))
-        self.input_label.pack(pady=(0,5), anchor="w")
+        # --- Input Group ---
+        self.input_frame = ttk.LabelFrame(main_container, text="RAW Codes and Descriptions (Optional):", padding="10")
+        self.input_frame.pack(expand=True, fill=tk.BOTH, pady=(0,10))
 
-        self.input_text = scrolledtext.ScrolledText(main_frame, height=15, width=80, relief=tk.FLAT, bd=2)
-        self.input_text.pack(expand=True, fill=tk.BOTH, pady=(0,10))
+        self.instructions_label = ttk.Label(self.input_frame, text="Instructions here...", wraplength=650, justify=tk.LEFT)
+        self.instructions_label.pack(pady=(0,5), anchor="w")
+
+        self.input_text = scrolledtext.ScrolledText(self.input_frame, height=10, width=80, relief=tk.FLAT, bd=2)
+        self.input_text.pack(expand=True, fill=tk.BOTH, pady=(0,5))
         self.input_text.configure(bg=DARK_INSERT_BG, fg=DARK_FG, insertbackground=DARK_FG, selectbackground=DARK_SELECT_BG)
         
-        button_frame = ttk.Frame(main_frame)
-        button_frame.pack(fill=tk.X, pady=(0,10))
+        # --- Output Group ---
+        self.output_frame = ttk.LabelFrame(main_container, text="PNACH Output (Preview):", padding="10")
+        self.output_frame.pack(expand=True, fill=tk.BOTH, pady=(5,10))
 
-        self.convert_button = ttk.Button(button_frame, text=translations_tk.get_text("convert_button"), command=self.convert_input)
+        self.output_text = scrolledtext.ScrolledText(self.output_frame, height=10, width=80, relief=tk.FLAT, bd=2, state="disabled")
+        self.output_text.pack(expand=True, fill=tk.BOTH)
+        self.output_text.configure(bg=DARK_INSERT_BG, fg=DARK_FG, insertbackground=DARK_FG, selectbackground=DARK_SELECT_BG)
+
+        # --- Buttons ---
+        button_frame = ttk.Frame(main_container)
+        button_frame.pack(fill=tk.X, pady=(0,5))
+
+        self.convert_button = ttk.Button(button_frame, text="Convert", command=self.convert_input)
         self.convert_button.pack(side=tk.LEFT, padx=(0,5))
 
-        self.clear_button = ttk.Button(button_frame, text=translations_tk.get_text("clear_button"), command=self.clear_fields)
+        self.clear_button = ttk.Button(button_frame, text="Clear", command=self.clear_fields)
         self.clear_button.pack(side=tk.LEFT, padx=(0,5))
-        
-        self.output_label = ttk.Label(main_frame, text=translations_tk.get_text("pnach_output_label"))
-        self.output_label.pack(pady=(0,5), anchor="w")
 
-        self.output_text = scrolledtext.ScrolledText(main_frame, height=15, width=80, state=tk.DISABLED, relief=tk.FLAT, bd=2)
-        self.output_text.pack(expand=True, fill=tk.BOTH)
-        self.output_text.configure(bg=DARK_INSERT_BG, fg=DARK_FG, selectbackground=DARK_SELECT_BG)
 
     def convert_input(self):
         raw_input_text = self.input_text.get("1.0", tk.END).strip()
+        self.current_pnach_items = []
         
-        self.current_pnach_items = [] 
-        self.output_text.config(state=tk.NORMAL)
+        self.output_text.config(state="normal")
         self.output_text.delete("1.0", tk.END)
+        self.output_text.config(state="disabled")
+        
+        self.update_save_as_state() # Désactive "Enregistrer sous" initialement
 
         if not raw_input_text:
             messagebox.showwarning(
-                translations_tk.get_text("no_input_warning_title"), 
-                translations_tk.get_text("no_input_warning_text"),
-                parent=self
+                translations_tk.get_text("no_input_warning_title"),
+                translations_tk.get_text("no_input_warning_text")
             )
-            self.output_text.config(state=tk.DISABLED)
-            self.update_save_as_state()
             return
 
         input_lines = raw_input_text.splitlines()
+        pnach_output_lines = [
+            f"gametitle={translations_tk.get_text('gametitle_default')}",
+            f"comment={translations_tk.get_text('comment_default')}",
+            ""
+        ]
+        
         current_description = None
-        temp_pnach_output_lines = [] 
 
-        for line in input_lines:
+        for line_num, line in enumerate(input_lines, 1):
             cleaned_line = line.strip()
             if not cleaned_line:
                 continue
@@ -247,7 +251,7 @@ class Pcsx2PnachToolTk(tk.Tk):
             if len(parts) == 2:
                 try:
                     if len(parts[0]) == 8 and len(parts[1]) == 8:
-                        int(parts[0], 16)
+                        int(parts[0], 16) 
                         int(parts[1], 16)
                         addr_hex = parts[0].upper()
                         val_hex = parts[1].upper()
@@ -256,155 +260,138 @@ class Pcsx2PnachToolTk(tk.Tk):
                     is_valid_raw_code = False
             
             if is_valid_raw_code:
-                self.current_pnach_items.append({"desc": current_description, "addr": addr_hex, "val": val_hex})
+                self.current_pnach_items.append((current_description, addr_hex, val_hex))
                 if current_description:
-                    temp_pnach_output_lines.append(f"// {current_description}")
-                temp_pnach_output_lines.append(f"patch=1,EE,{addr_hex},extended,{val_hex}") 
+                    pnach_output_lines.append(f"// {current_description}")
+                pnach_output_lines.append(f"patch=1,EE,{addr_hex},extended,{val_hex}") # Ajout de 'extended'
                 current_description = None
             else:
                 current_description = cleaned_line 
 
         if self.current_pnach_items:
-            self.output_text.insert("1.0", "\n".join(temp_pnach_output_lines))
+            self.output_text.config(state="normal")
+            self.output_text.insert("1.0", "\n".join(pnach_output_lines))
+            self.output_text.config(state="disabled")
+            self.update_save_as_state() # Active "Enregistrer sous"
             messagebox.showinfo(
-                translations_tk.get_text("conversion_success_title"), 
-                translations_tk.get_text("conversion_success_text"),
-                parent=self
+                translations_tk.get_text("conversion_success_title"),
+                translations_tk.get_text("conversion_success_text")
             )
         else:
-            msg_if_no_code = translations_tk.get_text("no_valid_code_warning_text")
+            no_valid_text = translations_tk.get_text("no_valid_code_warning_text")
             if current_description:
-                 msg_if_no_code = translations_tk.get_text("no_valid_code_with_desc_text", description=current_description)
-                 self.output_text.insert("1.0", msg_if_no_code) 
+                 no_valid_text = translations_tk.get_text("no_valid_code_with_desc_text", description=current_description)
             
+            self.output_text.config(state="normal")
+            self.output_text.insert("1.0", no_valid_text)
+            self.output_text.config(state="disabled")
             messagebox.showwarning(
                 translations_tk.get_text("no_valid_code_warning_title"),
-                translations_tk.get_text("no_valid_code_warning_text") if not current_description else msg_if_no_code,
-                parent=self
+                no_valid_text # Utiliser le texte potentiellement modifié
             )
-        
-        self.output_text.config(state=tk.DISABLED)
-        self.update_save_as_state()
 
     def save_as_file(self):
         if not self.current_pnach_items:
             messagebox.showwarning(
-                translations_tk.get_text("no_code_to_export_warning_title"), 
-                translations_tk.get_text("no_code_to_export_warning_text"), 
-                parent=self
+                translations_tk.get_text("no_code_to_export_warning_title"),
+                translations_tk.get_text("no_code_to_export_warning_text")
             )
             return
 
-        game_title = simpledialog.askstring(
-            translations_tk.get_text("game_name_input_dialog_title"), 
+        game_title_input = simpledialog.askstring(
+            translations_tk.get_text("game_name_input_dialog_title"),
             translations_tk.get_text("game_name_input_dialog_label"),
             parent=self
         )
-        if not game_title: 
+        if not game_title_input or not game_title_input.strip():
             messagebox.showinfo(
-                translations_tk.get_text("export_cancelled_title"), 
-                translations_tk.get_text("export_cancelled_no_name_text"), 
-                parent=self
+                translations_tk.get_text("export_cancelled_title"),
+                translations_tk.get_text("export_cancelled_no_name_text")
             )
             return
 
-        game_crc = simpledialog.askstring(
+        game_crc_input = simpledialog.askstring(
             translations_tk.get_text("game_crc_input_dialog_title"),
             translations_tk.get_text("game_crc_input_dialog_label"),
             parent=self
         )
-        if not game_crc: 
+        if not game_crc_input or not game_crc_input.strip():
             messagebox.showinfo(
-                translations_tk.get_text("export_cancelled_title"), 
-                translations_tk.get_text("export_cancelled_no_crc_text"), 
-                parent=self
+                translations_tk.get_text("export_cancelled_title"),
+                translations_tk.get_text("export_cancelled_no_crc_text")
             )
             return
-        
-        game_crc = game_crc.strip().upper()
-        if not (len(game_crc) == 8 and all(c in "0123456789ABCDEF" for c in game_crc)):
+
+        game_crc_cleaned = game_crc_input.strip().upper()
+        if not (len(game_crc_cleaned) == 8 and all(c in "0123456789ABCDEF" for c in game_crc_cleaned)):
             messagebox.showerror(
-                translations_tk.get_text("invalid_crc_error_title"), 
-                translations_tk.get_text("invalid_crc_error_text"), 
-                parent=self
+                translations_tk.get_text("invalid_crc_error_title"),
+                translations_tk.get_text("invalid_crc_error_text")
             )
             return
-        
-        pnach_content = f"gametitle={game_title.strip()}\ncomment={translations_tk.get_text('comment_default')}\n\n"
-        for item in self.current_pnach_items:
-            desc_comment = f"// {item['desc']}" if item['desc'] else ""
-            pnach_content += f"patch=1,EE,{item['addr']},extended,{item['val']} {desc_comment}\n"
 
-        suggested_filename = f"{game_crc}.pnach"
-        
-        try:
-            pnach_filter_text = translations_tk.get_text("pnach_file_filter").split(';;')[0].split('(')[0].strip()
-            all_files_text = translations_tk.get_text("all_files_filter_tk")
-        except Exception: 
-            pnach_filter_text = "PNACH files"
-            all_files_text = "All files"
+        pnach_content_lines = [f"gametitle={game_title_input.strip()}"]
+        pnach_content_lines.append(translations_tk.get_text("comment_default"))
+        pnach_content_lines.append("")
 
-        file_types_list = [
-            (pnach_filter_text, "*.pnach"),
-            (all_files_text, "*.*") 
-        ]
+        for desc, addr, val in self.current_pnach_items:
+            if desc:
+                pnach_content_lines.append(f"// {desc}")
+            pnach_content_lines.append(f"patch=1,EE,{addr},extended,{val}") 
 
         filepath = filedialog.asksaveasfilename(
-            defaultextension=".pnach",
-            filetypes=file_types_list,
-            initialfile=suggested_filename,
             title=translations_tk.get_text("save_pnach_dialog_title"),
-            parent=self
+            defaultextension=".pnach",
+            initialfile=f"{game_crc_cleaned}.pnach",
+            filetypes=[(translations_tk.get_text("pnach_file_filter").split(";;")[0].split("(")[0].strip(), 
+                        translations_tk.get_text("pnach_file_filter").split(";;")[0].split("(")[1].replace(")", "")),
+                       (translations_tk.get_text("pnach_file_filter").split(";;")[1].split("(")[0].strip(),
+                        translations_tk.get_text("pnach_file_filter").split(";;")[1].split("(")[1].replace(")", ""))]
         )
 
         if filepath:
             try:
                 with open(filepath, "w", encoding="utf-8") as f:
-                    f.write(pnach_content)
-                
-                success_msg_key = "file_saved_success_text_tk" 
-                msg = translations_tk.get_text(success_msg_key, filepath=filepath)
-                if msg == success_msg_key: 
-                    msg = translations_tk.get_text("file_saved_success") + f"\n({filepath})"
-
+                    f.write("\n".join(pnach_content_lines))
                 messagebox.showinfo(
-                    translations_tk.get_text("file_saved_success_title"), 
-                    msg, 
-                    parent=self
+                    translations_tk.get_text("file_saved_success_title"),
+                    translations_tk.get_text("file_saved_success_text_tk", filepath=filepath)
                 )
             except Exception as e:
                 messagebox.showerror(
-                    translations_tk.get_text("save_error_title"), 
-                    translations_tk.get_text("save_error_text", error=str(e)), 
-                    parent=self
+                    translations_tk.get_text("save_error_title"),
+                    translations_tk.get_text("save_error_text", error=e)
                 )
     
     def clear_fields(self):
         self.input_text.delete("1.0", tk.END)
-        self.output_text.config(state=tk.NORMAL)
+        self.output_text.config(state="normal")
         self.output_text.delete("1.0", tk.END)
-        self.output_text.config(state=tk.DISABLED)
+        self.output_text.config(state="disabled")
         self.current_pnach_items = []
         self.update_save_as_state()
 
     def show_about_dialog(self):
-        about_title = translations_tk.get_text("about_dialog_title")
-        about_message = translations_tk.get_text("about_dialog_text")
-        messagebox.showinfo(about_title, about_message, parent=self)
+        messagebox.showinfo(
+            translations_tk.get_text("about_dialog_title"),
+            translations_tk.get_text("about_dialog_text"),
+            parent=self
+        )
 
     def update_save_as_state(self):
-        if hasattr(self, 'file_menu'): 
-            if self.current_pnach_items:
-                self.file_menu.entryconfig(0, state=tk.NORMAL)
-            else:
-                self.file_menu.entryconfig(0, state=tk.DISABLED)
+        # Utiliser l'index 0 pour "Enregistrer PNACH sous..."
+        if self.current_pnach_items:
+            self.file_menu.entryconfig(0, state="normal")
+        else:
+            self.file_menu.entryconfig(0, state="disabled")
 
 if __name__ == "__main__":
     try:
-        locale.setlocale(locale.LC_ALL, '')  
+        # Essayer de définir la locale pour correspondre au système
+        # Cela peut aider avec certains aspects de l'internationalisation si Tk le supporte
+        locale.setlocale(locale.LC_ALL, '') 
     except locale.Error as e:
-        print(f"Avertissement : Impossible de définir la locale système par défaut : {e}")
-        print("La détection de la langue système pourrait ne pas fonctionner comme prévu.")
+        print(f"Avertissement : Impossible de définir la locale système : {e}")
 
     app = Pcsx2PnachToolTk()
     app.mainloop()
