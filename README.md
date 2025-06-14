@@ -16,6 +16,18 @@ python -m nuitka --onefile --windows-disable-console --enable-plugin=pyside6 --w
 
 Cela générera un fichier `Pcsx2 Pnach Tool.exe` dans le sous-dossier `dist`.
 
+#### Exécution (Windows)
+
+Après la compilation, vous trouverez l'exécutable `Pcsx2 Pnach Tool.exe` dans le dossier `dist` (créé à la racine de votre projet).
+Pour lancer l'application :
+1. Ouvrez l'explorateur de fichiers et naviguez jusqu'au dossier `dist`.
+2. Double-cliquez sur `Pcsx2 Pnach Tool.exe`.
+
+Ou depuis le terminal PowerShell, si vous êtes à la racine du projet :
+```powershell
+.\dist\"Pcsx2 Pnach Tool.exe"
+```
+
 ### Linux
 
 Pour compiler `Pcsx2_Pnach_Tool.py` en un exécutable unique sous Linux (par exemple, via WSL), vous pouvez utiliser Nuitka. Assurez-vous d'avoir Nuitka, PySide6, un compilateur C (comme GCC), et l'outil `patchelf` installés dans votre environnement Python/Linux.
@@ -37,6 +49,23 @@ Pour compiler `Pcsx2_Pnach_Tool.py` en un exécutable unique sous Linux (par exe
 
 Cela générera un fichier exécutable nommé `Pcsx2 Pnach Tool` dans le sous-dossier `dist`.
 
+#### Exécution (Linux)
+
+Après la compilation, vous trouverez l'exécutable `Pcsx2 Pnach Tool` dans le dossier `dist` (créé à la racine de votre projet).
+Pour lancer l'application depuis le terminal, si vous êtes à la racine du projet :
+1. Naviguez vers le dossier de sortie :
+   ```bash
+   cd dist
+   ```
+2. Rendez l'exécutable exécutable (si ce n'est pas déjà le cas) :
+   ```bash
+   chmod +x "Pcsx2 Pnach Tool"
+   ```
+3. Lancez l'application :
+   ```bash
+   ./"Pcsx2 Pnach Tool"
+   ```
+
 ## Licence
 
-Ce projet est fourni sans licence restrictive spécifique. Étant donné sa nature et sa simplicité, vous êtes libre de l'utiliser, de le modifier et de le distribuer. Si vous souhaitez formaliser cela, vous pouvez envisager d'ajouter une licence permissive telle que la [licence MIT](https://opensource.org/licenses/MIT) ou de le déclarer comme étant dans le [domaine public (Unlicense)](https://unlicense.org/).
+Ce projet est fourni sans licence restrictive spécifique. Étant donné sa nature et sa simplicité, vous êtes libre de l'utiliser, de le modifier et de le distribuer. 
