@@ -71,5 +71,3 @@ Pour lancer l'application depuis le terminal, si vous êtes à la racine du proj
    ```
 
 ## Licence
-
-Ce projet est fourni sans licence restrictive spécifique. Étant donné sa nature et sa simplicité, vous êtes libre de l'utiliser, de le modifier et de le distribuer.
