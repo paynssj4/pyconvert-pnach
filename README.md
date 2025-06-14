@@ -1,6 +1,6 @@
 # pyconvert-pnach
 
-`pyconvert-pnach` est un utilitaire simple pour convertir des fichiers PNACH. Il fournit une interface graphique pour faciliter le processus.
+`pyconvert-pnach` est un utilitaire simple pour convertir des codes "raw" en format PNACH. Il fournit une interface graphique pour faciliter le processus.
 
 ## Compilation
 
