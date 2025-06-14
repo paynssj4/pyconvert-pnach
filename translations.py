@@ -14,8 +14,15 @@ TRANSLATIONS = {
         "help_menu": "&Help",
         "about_action": "&About",
         "input_group_title": "RAW Codes and Descriptions (Optional)",
-        "input_instructions": "Enter RAW codes (XXXXXXXX YYYYYYYY) and/or descriptions.\\\\nA line that does not look like a RAW code will be treated as a description for the next code.\\\\nExample:\\\\n// Max Money\\\\n2030B968 FFFFFFFF\\\\n// Infinite Lives\\\\n10123456 00000009",
-        "raw_input_placeholder": "Paste your RAW codes here, one per line (e.g., 20XXXXXX XXXXXXXX)\\\\nYou can add descriptions on preceding lines.",
+        "input_instructions": """Enter RAW codes (XXXXXXXX YYYYYYYY) and/or descriptions.
+A line that does not look like a RAW code will be treated as a description for the next code.
+Example:
+Max Money
+2030B968 FFFFFFFF
+Infinite Lives
+10123456 00000009""",
+        "raw_input_placeholder": """Paste your RAW codes here, one per line (e.g., 20XXXXXX XXXXXXXX)
+You can add descriptions on preceding lines.""",
         "pnach_group_title": "PNACH Format (Preview)",
         "convert_button": "Convert to PNACH",
         "clear_button": "Clear",
@@ -42,18 +49,21 @@ TRANSLATIONS = {
         "save_pnach_dialog_title": "Save PNACH file",
         "pnach_file_filter": "PNACH Files (*.pnach);;All Files (*)",
         "file_saved_success_title": "Success",
-        "file_saved_success_text": "PNACH file saved successfully:\\\\n{filepath}",
+        "file_saved_success_text": """PNACH file saved successfully:
+{filepath}""",
         "save_error_title": "Save Error",
-        "save_error_text": "Could not save PNACH file:\\\\n{error}",
+        "save_error_text": """Could not save PNACH file:
+{error}""",
         "about_dialog_title": "About PyConvert Pnacher",
-        "about_dialog_text": (
-            "PyConvert Pnacher\\\\n\\\\n"
-            "A simple tool to convert PS2 RAW codes to PNACH format.\\\\n"
-            "Python port of concepts from PCSX2CE (PCSX2 Cheat Editor).\\\\n\\\\n"
-            "Developed by: [Paynssj4]\\\\n"
-            "License: MIT License\\\\n\\\\n"
-            "This software is provided without warranty."
-        )
+        "about_dialog_text": """PyConvert Pnacher
+
+A simple tool to convert PS2 RAW codes to PNACH format.
+Python port of concepts from PCSX2CE (PCSX2 Cheat Editor).
+
+Developed by: [Paynssj4]
+License: MIT License
+
+This software is provided without warranty.""",
     },
     "fr": {
         "window_title": "Pcsx2 Pnach Tool",
@@ -68,8 +78,15 @@ TRANSLATIONS = {
         "help_menu": "&Aide",
         "about_action": "À &propos",
         "input_group_title": "Codes RAW et Descriptions (Optionnel)",
-        "input_instructions": "Entrez les codes RAW (XXXXXXXX YYYYYYYY) et/ou les descriptions.\\\\nUne ligne qui ne ressemble pas à un code RAW sera traitée comme une description pour le code suivant.\\\\nExemple:\\\\n// Max Argent\\\\n2030B968 FFFFFFFF\\\\n// Vies Infinies\\\\n10123456 00000009",
-        "raw_input_placeholder": "Collez vos codes RAW ici, un par ligne (ex: 20XXXXXX XXXXXXXX)\\\\nVous pouvez ajouter des descriptions sur les lignes précédentes.",
+        "input_instructions": """Entrez les codes RAW (XXXXXXXX YYYYYYYY) et/ou les descriptions.
+Une ligne qui ne ressemble pas à un code RAW sera traitée comme une description pour le code suivant.
+Exemple:
+Max Argent
+2030B968 FFFFFFFF
+Vies Infinies
+10123456 00000009""",
+        "raw_input_placeholder": """Collez vos codes RAW ici, un par ligne (ex: 20XXXXXX XXXXXXXX)
+Vous pouvez ajouter des descriptions sur les lignes précédentes.""",
         "pnach_group_title": "Format PNACH (Prévisualisation)",
         "convert_button": "Convertir en PNACH",
         "clear_button": "Effacer",
@@ -80,7 +97,7 @@ TRANSLATIONS = {
         "conversion_success_title": "Conversion Réussie",
         "conversion_success_text": "Codes RAW convertis au format PNACH.",
         "no_valid_code_warning_title": "Aucun code valide",
-        "no_valid_code_warning_text": "Aucun code RAW valide n\'a été trouvé pour la conversion.",
+        "no_valid_code_warning_text": "Aucun code RAW valide n'a été trouvé pour la conversion.",
         "no_valid_code_with_desc_text": "// {description} (Aucun code RAW valide trouvé après cette description)",
         "no_code_to_export_warning_title": "Aucun code",
         "no_code_to_export_warning_text": "Aucun code PNACH à exporter.",
@@ -96,17 +113,20 @@ TRANSLATIONS = {
         "save_pnach_dialog_title": "Sauvegarder le fichier PNACH",
         "pnach_file_filter": "Fichiers PNACH (*.pnach);;Tous les fichiers (*)",
         "file_saved_success_title": "Succès",
-        "file_saved_success_text": "Fichier PNACH sauvegardé avec succès:\\\\n{filepath}",
+        "file_saved_success_text": """Fichier PNACH sauvegardé avec succès:
+{filepath}""",
         "save_error_title": "Erreur de Sauvegarde",
-        "save_error_text": "Impossible de sauvegarder le fichier PNACH:\\\\n{e}",
+        "save_error_text": """Impossible de sauvegarder le fichier PNACH:
+{error}""",
         "about_dialog_title": "À propos de PyConvert Pnacher",
-        "about_dialog_text": (
-            "PyConvert Pnacher\\\\n\\\\n"
-            "Un outil simple pour convertir les codes PS2 RAW au format PNACH.\\\\n"
-            "Portage en Python de concepts issus de PCSX2CE (PCSX2 Cheat Editor).\\\\n\\\\n"
-            "Développé par : [Paynssj4]\\\\n"
-            "Licence : MIT License\\\\n\\\\n"
-            "Ce logiciel est fourni sans garantie."
-        )
+        "about_dialog_text": """PyConvert Pnacher
+
+Un outil simple pour convertir les codes PS2 RAW au format PNACH.
+Portage en Python de concepts issus de PCSX2CE (PCSX2 Cheat Editor).
+
+Développé par : [Paynssj4]
+Licence : MIT License
+
+Ce logiciel est fourni sans garantie.""",
     }
 }
