@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.paynssj4.Pcsx2PnachTool</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <name>Pcsx2 Pnach Tool</name>
+  <summary>Outil de conversion de codes RAW PS2 en format PNACH</summary>
+  <description>
+    <p>PyConvert Pnacher est un outil simple pour convertir les codes de triche RAW du système PlayStation 2 au format PNACH utilisé par l'émulateur PCSX2.</p>
+    <p>Caractéristiques :</p>
+    <ul>
+      <li>Interface graphique conviviale.</li>
+      <li>Conversion de codes RAW avec adresses et valeurs.</li>
+      <li>Gestion des descriptions pour les codes.</li>
+      <li>Exportation facile vers un fichier .pnach avec CRC du jeu.</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">io.github.paynssj4.Pcsx2PnachTool.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/paynssj4/pyconvert-pnach/main/Pcsx2 Pnach Tool.jpg</image>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">https://github.com/paynssj4/pyconvert-pnach</url>
+  <url type="bugtracker">https://github.com/paynssj4/pyconvert-pnach/issues</url>
+  <developer_name>paynssj4</developer_name> 
+  <content_rating type="oars-1.1" />
+  <releases>
+    <release version="1.0.0" date="2025-06-14"> 
+      <description><p>Première version.</p></description>
+    </release>
+  </releases>
+</component>

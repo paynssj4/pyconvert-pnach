@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Pcsx2 Pnach Tool
+Comment=Convertir les codes RAW PS2 en format PNACH
+Exec=python3 /app/bin/Pcsx2_Pnach_Tool.py
+Icon=io.github.paynssj4.Pcsx2PnachTool
+Terminal=false
+Type=Application
+Categories=Utility;Development;
+StartupWMClass=Pcsx2 Pnach Tool

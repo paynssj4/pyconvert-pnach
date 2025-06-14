@@ -2,6 +2,10 @@
 
 `Pcsx2 Pnach Tool` est un utilitaire simple pour convertir des fichiers PNACH. Il fournit une interface graphique pour faciliter le processus.
 
+## Capture d'écran
+
+![Capture d'écran de Pcsx2 Pnach Tool](https://raw.githubusercontent.com/paynssj4/pyconvert-pnach/main/Pcsx2%20Pnach%20Tool.jpg)
+
 ## Compilation
 
 ### Windows
@@ -68,4 +72,4 @@ Pour lancer l'application depuis le terminal, si vous êtes à la racine du proj
 
 ## Licence
 
-Ce projet est fourni sans licence restrictive spécifique. Étant donné sa nature et sa simplicité, vous êtes libre de l'utiliser, de le modifier et de le distribuer. 
+Ce projet est fourni sans licence restrictive spécifique. Étant donné sa nature et sa simplicité, vous êtes libre de l'utiliser, de le modifier et de le distribuer.
