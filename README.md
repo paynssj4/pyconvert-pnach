@@ -1,18 +1,41 @@
-# pyconvert-pnach
+# Pcsx2 Pnach Tool
 
-`pyconvert-pnach` est un utilitaire simple pour convertir des fichiers PNACH. Il fournit une interface graphique pour faciliter le processus.
+`Pcsx2 Pnach Tool` est un utilitaire simple pour convertir des fichiers PNACH. Il fournit une interface graphique pour faciliter le processus.
 
 ## Compilation
 
-Pour compiler `pyconvert_pnacher.py` en un exécutable unique sous Windows, vous pouvez utiliser Nuitka. Assurez-vous d'avoir Nuitka et un compilateur C compatible (comme MinGW ou celui fourni avec Visual Studio) installés.
+### Windows
 
-La commande de base pour la compilation est la suivante (en supposant que vous utilisez PySide6 pour l'interface graphique) :
+Pour compiler `Pcsx2_Pnach_Tool.py` en un exécutable unique sous Windows, vous pouvez utiliser Nuitka. Assurez-vous d'avoir Nuitka, PySide6, et un compilateur C compatible (comme MinGW ou celui fourni avec Visual Studio) installés dans votre environnement Python.
 
-```bash
-python -m nuitka --onefile --windows-disable-console --enable-plugin=pyside6 pyconvert_pnacher.py
+La commande de base pour la compilation est la suivante, en incluant l'icône de l'application (assurez-vous que `Pcsx2 Pnach Tool.ico` est dans le même répertoire) :
+
+```powershell
+python -m nuitka --onefile --windows-disable-console --enable-plugin=pyside6 --windows-icon-from-ico="Pcsx2 Pnach Tool.ico" --output-dir=.\dist --output-filename="Pcsx2 Pnach Tool" Pcsx2_Pnach_Tool.py
 ```
 
-Cela générera un fichier `pyconvert_pnacher.exe`. Avec l'option `--onefile`, Nuitka s'efforce de créer un seul exécutable autonome.
+Cela générera un fichier `Pcsx2 Pnach Tool.exe` dans le sous-dossier `dist`.
+
+### Linux
+
+Pour compiler `Pcsx2_Pnach_Tool.py` en un exécutable unique sous Linux (par exemple, via WSL), vous pouvez utiliser Nuitka. Assurez-vous d'avoir Nuitka, PySide6, un compilateur C (comme GCC), et l'outil `patchelf` installés dans votre environnement Python/Linux.
+
+1.  Installez `patchelf` si ce n'est pas déjà fait (exemple pour les distributions basées sur Debian/Ubuntu) :
+    ```bash
+    sudo apt update
+    sudo apt install patchelf
+    ```
+2.  Assurez-vous que PySide6 est installé dans votre environnement virtuel :
+    ```bash
+    pip install PySide6
+    ```
+3.  Compilez avec Nuitka:
+       
+    ```bash
+    python -m nuitka --onefile --enable-plugin=pyside6 --output-dir=./dist --output-filename="Pcsx2 Pnach Tool" Pcsx2_Pnach_Tool.py
+    ```
+
+Cela générera un fichier exécutable nommé `Pcsx2 Pnach Tool` dans le sous-dossier `dist`.
 
 ## Licence
 
