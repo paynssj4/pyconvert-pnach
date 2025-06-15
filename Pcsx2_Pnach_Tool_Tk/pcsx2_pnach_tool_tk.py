@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk, scrolledtext, filedialog, messagebox, simpledialog
 import os
 import locale
-import translations_tk # Assurez-vous que translations_tk.py est dans le même répertoire
+import translations_tk 
 
 DARK_BG = "#2E2E2E"
 DARK_FG = "#FFFFFF"
@@ -22,7 +22,7 @@ class Pcsx2PnachToolTk(tk.Tk):
         self._apply_dark_theme()
 
         self.title(translations_tk.get_text("window_title"))
-        self.geometry("700x650") # Augmenté légèrement la hauteur pour les instructions
+        self.geometry("700x650")
         
         icon_path = "Pcsx2_Pnach_Tool.ico" 
         if os.path.exists(icon_path):
@@ -62,54 +62,52 @@ class Pcsx2PnachToolTk(tk.Tk):
 
     def _get_system_language(self):
         try:
-            # Utiliser locale.getlocale() après setlocale pour une approche plus moderne
-            current_locale_tuple = locale.getlocale(locale.LC_CTYPE) # Ou locale.getlocale()
+            current_locale_tuple = locale.getlocale(locale.LC_CTYPE)
             if current_locale_tuple and current_locale_tuple[0]:
                 lang_code = current_locale_tuple[0].split('_')[0]
                 if lang_code in translations_tk.TRANSLATIONS: 
                     return lang_code
         except Exception:
             pass 
-        return "en" # Langue par défaut
+        return "en"
 
     def _create_menubar(self):
         self.menubar = tk.Menu(self)
         self.config(menu=self.menubar)
 
         self.file_menu = tk.Menu(self.menubar, tearoff=0)
-        # Définir le label initialement ici
         self.menubar.add_cascade(label=translations_tk.get_text("file_menu"), menu=self.file_menu)
-        self.file_menu.add_command(label="", command=self.save_as_file, state="disabled") # Label et état mis à jour plus tard
+        self.file_menu.add_command(label="", command=self.save_as_file, state="disabled")
         self.file_menu.add_separator() 
-        self.file_menu.add_command(label="", command=self.quit) # Label mis à jour plus tard
+        self.file_menu.add_command(label="", command=self.quit)
 
         options_menu = tk.Menu(self.menubar, tearoff=0)
-        self.menubar.add_cascade(label=translations_tk.get_text("options_menu"), menu=options_menu) # Définir le label initialement ici
+        self.menubar.add_cascade(label=translations_tk.get_text("options_menu"), menu=options_menu)
         
         self.language_menu = tk.Menu(options_menu, tearoff=0)
-        options_menu.add_cascade(label=translations_tk.get_text("language_menu"), menu=self.language_menu) # Définir le label initialement ici
+        options_menu.add_cascade(label=translations_tk.get_text("language_menu"), menu=self.language_menu)
         
         self.lang_var = tk.StringVar(value=self.current_language)
         system_lang_val = self._get_system_language() 
 
         self.language_menu.add_radiobutton(
-            label=translations_tk.get_text("system_language_action"), variable=self.lang_var, # Définir le label initialement ici
+            label=translations_tk.get_text("system_language_action"), variable=self.lang_var,
             value=system_lang_val, 
             command=lambda: self._set_language(system_lang_val, is_system=True)
         )
         self.language_menu.add_radiobutton(
-            label=translations_tk.get_text("french_action"), variable=self.lang_var, value="fr", # Définir le label initialement ici
+            label=translations_tk.get_text("french_action"), variable=self.lang_var, value="fr",
             command=lambda: self._set_language("fr")
         )
         self.language_menu.add_radiobutton(
-            label=translations_tk.get_text("english_action"), variable=self.lang_var, value="en", # Définir le label initialement ici
+            label=translations_tk.get_text("english_action"), variable=self.lang_var, value="en",
             command=lambda: self._set_language("en")
         )
         self._update_language_menu_radio_state()
 
         self.help_menu = tk.Menu(self.menubar, tearoff=0) 
-        self.menubar.add_cascade(label=translations_tk.get_text("help_menu"), menu=self.help_menu) # Définir le label initialement ici
-        self.help_menu.add_command(label=translations_tk.get_text("about_action"), command=self.show_about_dialog) # Définir le label initialement ici
+        self.menubar.add_cascade(label=translations_tk.get_text("help_menu"), menu=self.help_menu)
+        self.help_menu.add_command(label=translations_tk.get_text("about_action"), command=self.show_about_dialog)
 
     def _update_language_menu_radio_state(self):
         system_lang_code = self._get_system_language()
@@ -133,7 +131,6 @@ class Pcsx2PnachToolTk(tk.Tk):
         else: 
             translations_tk.CURRENT_LANG = "en"
             self.current_language = "en"
-            # Si la langue système n'est pas supportée, on reste sur 'en' mais on garde la sélection "système"
             if is_system and actual_lang_to_set not in translations_tk.TRANSLATIONS:
                  self._is_system_language_selected = True
             else:
@@ -146,14 +143,11 @@ class Pcsx2PnachToolTk(tk.Tk):
     def _update_ui_texts(self):
         self.title(translations_tk.get_text("window_title"))
         
-        # Mise à jour des labels des menus
-        # Utiliser les indices numériques directs (0, 1, 2) pour les cascades principales
         try:
-            self.menubar.entryconfig(0, label=translations_tk.get_text("file_menu")) # Fichier
-            self.menubar.entryconfig(1, label=translations_tk.get_text("options_menu"))# Options
-            self.menubar.entryconfig(2, label=translations_tk.get_text("help_menu"))   # Aide
+            self.menubar.entryconfig(0, label=translations_tk.get_text("file_menu"))
+            self.menubar.entryconfig(1, label=translations_tk.get_text("options_menu"))
+            self.menubar.entryconfig(2, label=translations_tk.get_text("help_menu"))
         except tk.TclError as e:
-            # Ce try-except est un contournement si le theming cause toujours des conflits
             print(f"Avertissement : Impossible de mettre à jour les labels de la barre de menu principale : {e}")
 
         self.file_menu.entryconfig(0, label=translations_tk.get_text("save_as_button"))
@@ -164,12 +158,10 @@ class Pcsx2PnachToolTk(tk.Tk):
         self.language_menu.entryconfig(2, label=translations_tk.get_text("english_action"))
         self.help_menu.entryconfig(0, label=translations_tk.get_text("about_action"))
 
-        # Mise à jour des widgets
         if hasattr(self, 'input_frame'):
             self.input_frame.config(text=translations_tk.get_text("input_instructions_label"))
         if hasattr(self, 'instructions_label'):
             self.instructions_label.config(text=translations_tk.get_text("input_instructions_text"))
-            # Simuler un placeholder pour ScrolledText n'est pas direct. Les instructions sont au-dessus.
         if hasattr(self, 'output_frame'):
             self.output_frame.config(text=translations_tk.get_text("pnach_output_label"))
         if hasattr(self, 'convert_button'):
@@ -221,7 +213,7 @@ class Pcsx2PnachToolTk(tk.Tk):
         self.output_text.delete("1.0", tk.END)
         self.output_text.config(state="disabled")
         
-        self.update_save_as_state() # Désactive "Enregistrer sous" initialement
+        self.update_save_as_state()
 
         if not raw_input_text:
             messagebox.showwarning(
@@ -263,7 +255,7 @@ class Pcsx2PnachToolTk(tk.Tk):
                 self.current_pnach_items.append((current_description, addr_hex, val_hex))
                 if current_description:
                     pnach_output_lines.append(f"// {current_description}")
-                pnach_output_lines.append(f"patch=1,EE,{addr_hex},extended,{val_hex}") # Ajout de 'extended'
+                pnach_output_lines.append(f"patch=1,EE,{addr_hex},extended,{val_hex}")
                 current_description = None
             else:
                 current_description = cleaned_line 
@@ -272,7 +264,7 @@ class Pcsx2PnachToolTk(tk.Tk):
             self.output_text.config(state="normal")
             self.output_text.insert("1.0", "\n".join(pnach_output_lines))
             self.output_text.config(state="disabled")
-            self.update_save_as_state() # Active "Enregistrer sous"
+            self.update_save_as_state()
             messagebox.showinfo(
                 translations_tk.get_text("conversion_success_title"),
                 translations_tk.get_text("conversion_success_text")
@@ -287,7 +279,7 @@ class Pcsx2PnachToolTk(tk.Tk):
             self.output_text.config(state="disabled")
             messagebox.showwarning(
                 translations_tk.get_text("no_valid_code_warning_title"),
-                no_valid_text # Utiliser le texte potentiellement modifié
+                no_valid_text
             )
 
     def save_as_file(self):
@@ -379,7 +371,6 @@ class Pcsx2PnachToolTk(tk.Tk):
         )
 
     def update_save_as_state(self):
-        # Utiliser l'index 0 pour "Enregistrer PNACH sous..."
         if self.current_pnach_items:
             self.file_menu.entryconfig(0, state="normal")
         else:
@@ -387,8 +378,6 @@ class Pcsx2PnachToolTk(tk.Tk):
 
 if __name__ == "__main__":
     try:
-        # Essayer de définir la locale pour correspondre au système
-        # Cela peut aider avec certains aspects de l'internationalisation si Tk le supporte
         locale.setlocale(locale.LC_ALL, '') 
     except locale.Error as e:
         print(f"Avertissement : Impossible de définir la locale système : {e}")

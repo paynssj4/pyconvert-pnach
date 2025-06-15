@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.paynssj4.Pcsx2PnachToolTk</id>
+  
+  <name>Pcsx2 Pnach Tool (Tk)</name>
+  <summary>Convert PS2 RAW codes to PNACH format (Tkinter version)</summary>
+  <summary xml:lang="fr">Convertir les codes RAW PS2 au format PNACH (version Tkinter)</summary>
+  
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  
+  <description>
+    <p>Pcsx2 Pnach Tool (Tkinter) is a simple desktop application designed to help users convert raw cheat codes for PlayStation 2 games into the PNACH format, compatible with the PCSX2 emulator. The tool also allows adding descriptions to codes for better organization.</p>
+    <p>This version uses the Tkinter library for its user interface, offering a lightweight alternative to the PySide6 version.</p>
+    <p xml:lang="fr">Pcsx2 Pnach Tool (Tkinter) est une application de bureau simple conçue pour aider les utilisateurs à convertir des codes de triche bruts (RAW) pour les jeux PlayStation 2 au format PNACH, compatible avec l'émulateur PCSX2. L'outil permet également d'ajouter des descriptions aux codes pour une meilleure organisation.</p>
+    <p xml:lang="fr">Cette version utilise la bibliothèque Tkinter pour son interface utilisateur, offrant une alternative légère à la version PySide6.</p>
+  </description>
+  
+  <launchable type="desktop-id">io.github.paynssj4.Pcsx2PnachToolTk.desktop</launchable>
+  
+  <screenshots>
+    <screenshot type="default">
+      <caption>Main window of Pcsx2 Pnach Tool (Tkinter)</caption>
+      <caption>xml:lang="fr"Fenêtre principale de Pcsx2 Pnach Tool (Tkinter)</caption>
+       <image>https://raw.githubusercontent.com/paynssj4/Pcsx2PnachTool/master/Pcsx2_Pnach_Tool_Tk/pptk.jpg</image>
+    </screenshot>
+  </screenshots>
+  
+  <releases>
+    <release version="1.0.0" date="2025-06-15">
+      <description>
+        <p>Initial release of the Tkinter version.</p>
+        <p xml:lang="fr">Version initiale de la version Tkinter.</p>
+      </description>
+    </release>
+  </releases>
+  
+  <content_rating type="oars-1.1" />
+  
+  <url type="homepage">https://github.com/paynssj4/Pcsx2PnachTool</url>
+  <url type="bugtracker">https://github.com/paynssj4/Pcsx2PnachTool/issues</url>
+  <developer_name>Paynssj4</developer_name>
+  <update_contact></update_contact>
+</component>

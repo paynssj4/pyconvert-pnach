@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Pcsx2 Pnach Tool (Tk)
+Comment=Convert PS2 RAW codes to PNACH format (Tkinter version)
+Comment[fr]=Convertir les codes RAW PS2 au format PNACH (version Tkinter)
+Exec=pcsx2_pnach_tool_tk_launcher.sh
+Icon=io.github.paynssj4.Pcsx2PnachToolTk
+Type=Application
+Categories=Utility;Development;
+StartupNotify=true

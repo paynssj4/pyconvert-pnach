@@ -1,0 +1,41 @@
+app-id: io.github.paynssj4.Pcsx2PnachToolTk
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+command: pcsx2_pnach_tool_tk_launcher.sh
+finish-args:
+  - --filesystem=home 
+  - --socket=x11
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --share=ipc
+  - --device=dri
+
+modules:
+  - name: python3-tkinter
+    buildsystem: simple
+    build-commands:
+      - mkdir -p ${FLATPAK_DEST}/lib/python3.11/site-packages/ # Ajuster la version de Python si nécessaire pour le runtime
+    sources: []
+
+  - name: pcsx2-pnach-tool-tk
+    buildsystem: simple
+    build-commands:
+      # Copier les fichiers de l'application dans le Flatpak
+      - mkdir -p /app/bin/
+      - mkdir -p /app/share/pcsx2_pnach_tool_tk/
+      - cp -r Pcsx2_Pnach_Tool_Tk/* /app/share/pcsx2_pnach_tool_tk/
+      - cp pcsx2_pnach_tool_tk_launcher.sh /app/bin/
+      - chmod +x /app/bin/pcsx2_pnach_tool_tk_launcher.sh
+      - mkdir -p /app/share/applications/
+      - cp io.github.paynssj4.Pcsx2PnachToolTk.desktop /app/share/applications/
+      - mkdir -p /app/share/metainfo/
+      - cp io.github.paynssj4.Pcsx2PnachToolTk.appdata.xml /app/share/metainfo/
+      - mkdir -p /app/share/icons/hicolor/128x128/apps/
+      - cp io.github.paynssj4.Pcsx2PnachTool.png /app/share/icons/hicolor/128x128/apps/io.github.paynssj4.Pcsx2PnachToolTk.png
+    sources:
+      - type: dir
+        path: ./
+      - type: shell
+        commands:
+          - rm -rf pyconvert_pnacher.build pyconvert_pnacher.dist pyconvert_pnacher.onefile-build __pycache__ Pcsx2_Pnach_Tool_Tk/__pycache__ .git
