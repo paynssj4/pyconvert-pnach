@@ -12,7 +12,7 @@
 
 Pour compiler `Pcsx2_Pnach_Tool.py` en un exécutable unique sous Windows, vous pouvez utiliser Nuitka. Assurez-vous d'avoir Nuitka, PySide6, et un compilateur C compatible (comme MinGW ou celui fourni avec Visual Studio) installés dans votre environnement Python.
 
-La commande de base pour la compilation est la suivante, en incluant l'icône de l'application (assurez-vous que `Pcsx2 Pnach Tool.ico` est dans le même répertoire) :
+La commande de base pour la compilation est la suivante, en incluant l'icône de l'application :
 
 ```powershell
 python -m nuitka --onefile --windows-disable-console --enable-plugin=pyside6 --windows-icon-from-ico="Pcsx2 Pnach Tool.ico" --output-dir=.\dist --output-filename="Pcsx2 Pnach Tool" Pcsx2_Pnach_Tool.py
